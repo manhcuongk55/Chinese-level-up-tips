@@ -272,6 +272,33 @@
           <button class="squad-copy-code" onclick="copyCode()">Copy</button>
         </div>
 
+        <!-- Together Milestones -->
+        <div class="squad-lb-title">🏅 Together Milestones</div>
+        <div class="squad-milestones" id="squad-milestones"></div>
+
+        <!-- Daily Challenge -->
+        <div class="squad-challenge" id="squad-challenge">
+          <div class="challenge-header">
+            <span class="challenge-fire">🎯</span>
+            <div>
+              <div class="challenge-title" id="challenge-title">Today's Squad Challenge</div>
+              <div class="challenge-sub" id="challenge-sub">Loading...</div>
+            </div>
+            <div class="challenge-xp">+50 XP</div>
+          </div>
+          <div class="challenge-words" id="challenge-words"></div>
+        </div>
+
+        <!-- Daily Check-in -->
+        <div class="squad-checkin-wrap">
+          <div class="squad-lb-title" style="margin-bottom:7px">💬 Daily Check-in</div>
+          <div class="checkin-feed" id="checkin-feed"></div>
+          <div class="checkin-input-row">
+            <input class="checkin-input" id="checkin-input" placeholder="Hôm nay học được gì? (1 câu thôi!)" maxlength="80"/>
+            <button class="checkin-send" onclick="sendCheckin()">→</button>
+          </div>
+        </div>
+
         <!-- Squad leaderboard -->
         <div class="squad-lb-title">📊 This Week's Leaderboard</div>
         <div class="squad-lb" id="squad-leaderboard"></div>

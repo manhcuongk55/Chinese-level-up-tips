@@ -638,6 +638,11 @@ function renderSquad(){
     const names=missed.map(m=>m.name).join(' & ');
     showToast(`😴 ${names} hasn't studied in ${missed[0].lastStudied} days!`);
   }
+
+  // Render sub-sections
+  renderMilestones(daysTogether);
+  renderDailyChallenge();
+  renderCheckinFeed();
 }
 
 function copyInviteLink(){
@@ -663,6 +668,90 @@ function checkSquadState(){
   const saved=localStorage.getItem('levelai_squad');
   if(saved){squad=JSON.parse(saved);showSquadActive();}
 }
+
+// ===== TOGETHER MILESTONES =====
+const MILESTONES=[
+  {days:3,  icon:'🌱', label:'3 Days'},
+  {days:7,  icon:'🔥', label:'1 Week'},
+  {days:30, icon:'🎯', label:'1 Month'},
+  {days:100,icon:'⚔️', label:'100 Days'},
+  {days:365,icon:'👑', label:'1 Year'},
+];
+function renderMilestones(daysTogether){
+  const wrap=document.getElementById('squad-milestones');if(!wrap)return;
+  wrap.innerHTML=MILESTONES.map(m=>{
+    const unlocked=daysTogether>=m.days;
+    const justUnlocked=daysTogether===m.days;
+    return `<div class="milestone-chip ${unlocked?'unlocked':'locked'}${justUnlocked?' just-unlocked':''}" title="${m.label}">
+      ${m.icon} ${m.label}${unlocked?' ✓':''}
+    </div>`;
+  }).join('');
+  // Celebrate newly unlocked
+  const newUnlock=MILESTONES.find(m=>daysTogether===m.days);
+  if(newUnlock){setTimeout(()=>{launchConfetti();showToast(`🏅 Milestone unlocked: ${newUnlock.icon} ${newUnlock.label} Together!`);addXP(50);showXPBurst('+50 XP 🏅');},300);}
+}
+
+// ===== DAILY CHALLENGE =====
+const DAILY_CHALLENGES=[
+  {topic:'Greetings 👋',sub:'Learn these today, use them tomorrow!',words:['你好','谢谢','再见','请']},
+  {topic:'Food & Drinks 🍜',sub:'Order like a local!',words:['米饭','茶','好吃','不辣']},
+  {topic:'Travel ✈️',sub:'Survive any airport in China!',words:['飞机','酒店','票','地图']},
+  {topic:'Feelings 💫',sub:'Express yourself in Chinese!',words:['快乐','累了','很好','没问题']},
+  {topic:'Numbers 🔢',sub:'Count, bargain, and win!',words:['一','十','百','多少钱']},
+  {topic:'Family 👨‍👩‍👧',sub:'Talk about your loved ones!',words:['妈妈','朋友','老师','我们']},
+  {topic:'Nature 🌿',sub:'Describe the world around you!',words:['太阳','水','山','花']},
+];
+let challengeDoneWords=new Set(JSON.parse(localStorage.getItem('levelai_challenge_done')||'[]'));
+
+function renderDailyChallenge(){
+  const today=new Date();const idx=today.getDay()+today.getDate()%DAILY_CHALLENGES.length;
+  const ch=DAILY_CHALLENGES[idx%DAILY_CHALLENGES.length];
+  const titleEl=document.getElementById('challenge-title'),subEl=document.getElementById('challenge-sub'),wordsEl=document.getElementById('challenge-words');
+  if(titleEl)titleEl.textContent="🗓️ Today: "+ch.topic;
+  if(subEl)subEl.textContent=ch.sub;
+  if(wordsEl)wordsEl.innerHTML=ch.words.map(w=>
+    `<button class="challenge-word${challengeDoneWords.has(w)?' done':''}" onclick="markChallengeWord('${w}',this)">${w}</button>`
+  ).join('');
+}
+function markChallengeWord(word,btn){
+  if(challengeDoneWords.has(word)){challengeDoneWords.delete(word);btn.classList.remove('done');}
+  else{challengeDoneWords.add(word);btn.classList.add('done');addXP(15);showXPBurst('+15 XP ⚡');floatEmoji('⚡');
+    if(challengeDoneWords.size>=4&&!localStorage.getItem('levelai_challenge_full_'+new Date().toDateString())){
+      localStorage.setItem('levelai_challenge_full_'+new Date().toDateString(),'1');
+      addXP(35);launchConfetti();showToast('🎉 Daily Challenge Complete! +50 XP total!');
+    }
+  }
+  localStorage.setItem('levelai_challenge_done',JSON.stringify([...challengeDoneWords]));
+}
+
+// ===== DAILY CHECK-IN =====
+const DEFAULT_CHECKINS=[
+  {name:'Minh',text:'Hôm nay học được 你好 và 谢谢! Dễ nhớ hơn mình tưởng 😄',time:'7:12 AM'},
+  {name:'Linh',text:'Xem 1 clip phim Trung, nghe được 3 từ quen rồi!',time:'8:45 AM'},
+  {name:'Thùy',text:'Chưa học hôm nay... hẹn tối nha mọi người 🙏',time:'9:00 AM'},
+];
+let myCheckins=JSON.parse(localStorage.getItem('levelai_checkins')||'[]');
+
+function renderCheckinFeed(){
+  const feed=document.getElementById('checkin-feed');if(!feed)return;
+  const all=[...DEFAULT_CHECKINS.map(c=>({...c,isYou:false})),...myCheckins.map(c=>({...c,isYou:true}))];
+  feed.innerHTML=all.map(c=>
+    `<div class="checkin-bubble${c.isYou?' you':''}">
+      <div class="checkin-meta">${c.isYou?'⭐ You':c.name} · ${c.time||'just now'}</div>
+      <div class="checkin-text">${c.text}</div>
+    </div>`
+  ).join('');
+  feed.scrollTop=feed.scrollHeight;
+}
+function sendCheckin(){
+  const input=document.getElementById('checkin-input');if(!input)return;
+  const text=input.value.trim();if(!text){showToast('Type something first!');return;}
+  const now=new Date();const time=now.getHours()+':'+(now.getMinutes()+'').padStart(2,'0');
+  myCheckins.push({name:userGoal.name||'You',text,time,isYou:true});
+  localStorage.setItem('levelai_checkins',JSON.stringify(myCheckins.slice(-5)));
+  input.value='';renderCheckinFeed();addXP(10);showXPBurst('+10 XP 💬');floatEmoji('💬');showToast('✅ Checked in!');
+}
+
 
 // ===== EFFECTS =====
 function showXPBurst(msg){const p=document.getElementById('xp-popup');if(!p)return;p.textContent=msg;p.classList.remove('burst');void p.offsetWidth;p.classList.add('burst');}

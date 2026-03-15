@@ -310,3 +310,36 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 .squad-leave-btn{background:none;border:1px solid rgba(255,255,255,.08);color:var(--muted);border-radius:11px;padding:8px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;width:100%;transition:all .2s}
 .squad-leave-btn:hover{border-color:var(--accent3);color:var(--accent3)}
 
+/* MILESTONES */
+.squad-milestones{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:4px}
+.milestone-chip{display:flex;align-items:center;gap:5px;border-radius:12px;padding:6px 10px;font-size:11px;font-weight:800;border:1.5px solid;transition:all .3s}
+.milestone-chip.unlocked{background:rgba(251,191,36,.15);border-color:rgba(251,191,36,.4);color:var(--yellow)}
+.milestone-chip.locked{background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.06);color:rgba(241,245,249,.25)}
+.milestone-chip.just-unlocked{animation:milestonePop .6s cubic-bezier(.34,1.56,.64,1)}
+@keyframes milestonePop{0%{transform:scale(0.6)}70%{transform:scale(1.15)}100%{transform:scale(1)}}
+
+/* DAILY CHALLENGE */
+.squad-challenge{background:linear-gradient(135deg,rgba(56,189,248,.08),rgba(167,139,250,.08));border:1px solid rgba(56,189,248,.2);border-radius:14px;padding:11px 12px;display:flex;flex-direction:column;gap:8px}
+.challenge-header{display:flex;align-items:center;gap:9px}
+.challenge-fire{font-size:22px}
+.challenge-title{font-size:12px;font-weight:900;color:var(--text);margin-bottom:1px}
+.challenge-sub{font-size:10px;color:var(--muted);font-weight:600}
+.challenge-xp{margin-left:auto;font-size:12px;font-weight:900;color:var(--yellow);background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.25);border-radius:9px;padding:3px 8px;white-space:nowrap}
+.challenge-words{display:flex;flex-wrap:wrap;gap:6px}
+.challenge-word{background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.25);border-radius:18px;padding:5px 11px;font-size:12px;font-weight:800;color:var(--accent2);cursor:pointer;transition:all .2s;font-family:'Noto Sans SC',sans-serif}
+.challenge-word:hover{background:rgba(56,189,248,.25);transform:scale(1.05)}
+.challenge-word.done{background:rgba(52,211,153,.15);border-color:rgba(52,211,153,.35);color:var(--green)}
+
+/* CHECK-IN */
+.squad-checkin-wrap{display:flex;flex-direction:column;gap:0}
+.checkin-feed{display:flex;flex-direction:column;gap:6px;margin-bottom:8px;max-height:140px;overflow-y:auto}
+.checkin-bubble{background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:11px;padding:7px 10px}
+.checkin-bubble.you{background:rgba(167,139,250,.1);border-color:rgba(167,139,250,.2)}
+.checkin-meta{font-size:9px;color:var(--muted);margin-bottom:3px;font-weight:700}
+.checkin-text{font-size:12px;color:var(--text);line-height:1.5}
+.checkin-input-row{display:flex;gap:7px}
+.checkin-input{flex:1;background:rgba(255,255,255,.05);border:1.5px solid var(--border);border-radius:12px;padding:9px 12px;font-size:12px;color:var(--text);font-family:'Inter',sans-serif;outline:none;transition:border .2s}
+.checkin-input:focus{border-color:var(--accent)}
+.checkin-input::placeholder{color:var(--muted);font-size:11px}
+.checkin-send{background:var(--accent);border:none;color:#fff;border-radius:12px;width:38px;font-size:16px;font-weight:900;cursor:pointer;transition:all .2s;flex-shrink:0}
+.checkin-send:hover{background:#c4b5fd;transform:scale(1.08)}
