@@ -488,6 +488,7 @@ function renderCommunity(){
 }
 function connectBuddy(id,btn){if(connected.has(id)){connected.delete(id);btn.className='buddy-connect';btn.textContent='Connect';showToast('Disconnected');}else{connected.add(id);btn.className='buddy-connect connected';btn.textContent='✓ Connected';addXP(10);showXPBurst('+10 XP 🤝');floatEmoji('🤝');showToast('🤝 Connected!');}}
 function joinRoom(name){showToast('🏠 Joining "'+name+'"...');addXP(5);showXPBurst('+5 XP 🏠');floatEmoji('🏠');}
+function afterCommunityRender(){checkSquadState();}
 
 // ===== STUDY CALENDAR =====
 function renderStudyCalendar(){
@@ -547,7 +548,120 @@ function switchTab(tab){
   const v=document.getElementById('view-'+tab);if(v)v.classList.add('active');
   ['feed','quiz','community','profile'].forEach(t=>{const tb=document.getElementById('tab-'+t),nb=document.getElementById('nav-'+t);if(tb)tb.classList.toggle('active',t===tab);if(nb)nb.classList.toggle('active',t===tab);});
   if(tab==='profile'){updateMissions();renderStudyCalendar();renderProfileGoalCard();updateXPBar();const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};set('st-streak',currentStreak);set('st-cards',cardsStudiedToday);set('st-saved',saved.size);}
-  if(tab==='quiz')initQuiz();if(tab==='community')renderCommunity();
+  if(tab==='quiz')initQuiz();if(tab==='community'){renderCommunity();checkSquadState();}
+}
+
+// ===== STUDY SQUAD =====
+let squad = JSON.parse(localStorage.getItem('levelai_squad') || 'null');
+
+const MOCK_SQUAD_MEMBERS = [
+  {name:'Linh',avatar:'👩',xp:340,streak:12,lastStudied:0},   // 0 = today
+  {name:'Minh',avatar:'👨',xp:780,streak:25,lastStudied:0},
+  {name:'Thùy',avatar:'🧑',xp:190,streak:7, lastStudied:3},   // 3 = missed 3 days
+  {name:'An',  avatar:'👩',xp:85, streak:0, lastStudied:5},   // missed 5 days
+];
+
+function genCode(){return Math.random().toString(36).slice(2,8).toUpperCase();}
+
+function createSquad(){
+  const code=genCode();
+  const myName=userGoal.name||'You';
+  squad={code,name:myName+"'s Squad",created:Date.now(),code};
+  localStorage.setItem('levelai_squad',JSON.stringify(squad));
+  showSquadActive();
+  launchConfetti();showToast('✨ Squad created! Share the code!');addXP(30);showXPBurst('+30 XP 🏆');
+}
+
+function joinSquad(){
+  const input=document.getElementById('join-code-input');
+  const code=(input?.value||'').trim().toUpperCase();
+  if(code.length<4){showToast('Enter a valid code!');return;}
+  squad={code,name:'Learners Squad',created:Date.now()-86400000*3}; // pretend joined 3 days ago
+  localStorage.setItem('levelai_squad',JSON.stringify(squad));
+  showSquadActive();
+  showToast('🎉 Joined squad '+code+'!');addXP(15);showXPBurst('+15 XP 🏆');floatEmoji('🏆');
+}
+
+function showSquadActive(){
+  const empty=document.getElementById('squad-empty'),active=document.getElementById('squad-active');
+  if(empty)empty.style.display='none';if(active)active.style.display='block';
+  renderSquad();
+}
+
+function renderSquad(){
+  if(!squad)return;
+  const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
+  set('squad-name-display',squad.name);
+  set('squad-code-display',squad.code||'——');
+
+  // Days together
+  const daysTogether=Math.floor((Date.now()-(squad.created||Date.now()))/86400000)+1;
+  set('squad-days-together',daysTogether);
+  set('squad-meta',`Together for ${daysTogether} day${daysTogether!==1?'s':''} · ${squad.code}`);
+
+  // Build full member list (mock others + you)
+  const you={name:userGoal.name||'You',avatar:'🧑',xp:totalXP,streak:currentStreak,lastStudied:0,isYou:true};
+  const members=[you,...MOCK_SQUAD_MEMBERS];
+
+  // Group streak = minimum active streak in squad (encourages everyone to study)
+  const minStreak=Math.min(...members.map(m=>m.lastStudied<=1?m.streak:0));
+  set('squad-group-streak',minStreak+'🔥');
+
+  // Squad total XP
+  const squadXP=members.reduce((s,m)=>s+m.xp,0);
+  set('squad-total-xp',squadXP+'⭐');
+
+  // Leaderboard — sort by XP
+  const ranked=[...members].sort((a,b)=>b.xp-a.xp);
+  const medals=['🥇','🥈','🥉','4️⃣','5️⃣'];
+  const lb=document.getElementById('squad-leaderboard');
+  if(lb){
+    lb.innerHTML=ranked.map((m,i)=>{
+      const missed=m.lastStudied>=2;
+      const missedBadge=missed?`<span class="squad-missed">😴 ${m.lastStudied}d away</span>`:'';
+      return `<div class="squad-lb-row${m.isYou?' you':''}">
+        <div class="squad-lb-rank">${medals[i]||'·'}</div>
+        <div class="squad-lb-avatar">${m.avatar}</div>
+        <div class="squad-lb-info">
+          <div class="squad-lb-name">${m.name}${m.isYou?' (you)':''}</div>
+          <div class="squad-lb-stats">🔥${m.lastStudied===0?m.streak:'0 (missed)'} streak · 📅${m.lastStudied===0?'Active today':'Inactive '+m.lastStudied+'d'}</div>
+        </div>
+        <div class="squad-lb-xp">⭐${m.xp}</div>
+        ${missedBadge}
+      </div>`;
+    }).join('');
+  }
+
+  // "Missed you" nudge if any member has been away 2+ days
+  const missed=members.filter(m=>!m.isYou&&m.lastStudied>=2);
+  if(missed.length){
+    const names=missed.map(m=>m.name).join(' & ');
+    showToast(`😴 ${names} hasn't studied in ${missed[0].lastStudied} days!`);
+  }
+}
+
+function copyInviteLink(){
+  if(!squad)return;
+  const link=`https://manhcuongk55.github.io/Chinese-level-up-tips/app/?squad=${squad.code}`;
+  if(navigator.clipboard)navigator.clipboard.writeText(link).then(()=>showToast('🔗 Link copied! Share with friends!'));
+  floatEmoji('🔗');
+}
+function copyCode(){
+  if(!squad)return;
+  if(navigator.clipboard)navigator.clipboard.writeText(squad.code).then(()=>showToast('📋 Code '+squad.code+' copied!'));
+}
+function leaveSquad(){
+  if(!confirm('Leave your squad?'))return;
+  squad=null;localStorage.removeItem('levelai_squad');
+  const empty=document.getElementById('squad-empty'),active=document.getElementById('squad-active');
+  if(empty)empty.style.display='';if(active)active.style.display='none';
+  showToast('Left squad. You can create or join a new one!');
+}
+
+// Check squad on community load
+function checkSquadState(){
+  const saved=localStorage.getItem('levelai_squad');
+  if(saved){squad=JSON.parse(saved);showSquadActive();}
 }
 
 // ===== EFFECTS =====
