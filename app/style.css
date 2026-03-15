@@ -343,3 +343,21 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 .checkin-input::placeholder{color:var(--muted);font-size:11px}
 .checkin-send{background:var(--accent);border:none;color:#fff;border-radius:12px;width:38px;font-size:16px;font-weight:900;cursor:pointer;transition:all .2s;flex-shrink:0}
 .checkin-send:hover{background:#c4b5fd;transform:scale(1.08)}
+
+/* ===== STORY CARDS ===== */
+.badge-story{color:#f97316;border-color:rgba(249,115,22,.4);background:rgba(249,115,22,.1)}
+.story-face{min-height:380px;justify-content:flex-start;gap:7px;padding:36px 14px 14px}
+.story-scene-title{font-size:15px;font-weight:900;color:var(--text);text-align:center;margin-top:2px}
+.story-setting{font-size:10px;color:var(--muted);text-align:center;font-style:italic;margin-bottom:4px;line-height:1.5}
+.story-lines{display:flex;flex-direction:column;gap:7px;width:100%}
+.story-bubble{border-radius:14px;padding:8px 11px;cursor:pointer;transition:all .2s;max-width:88%;position:relative}
+.story-bubble:hover{transform:scale(1.02);opacity:.9}
+.bubble-left{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);align-self:flex-start;border-bottom-left-radius:4px}
+.bubble-right{background:linear-gradient(135deg,rgba(167,139,250,.22),rgba(56,189,248,.15));border:1px solid rgba(167,139,250,.3);align-self:flex-end;border-bottom-right-radius:4px}
+.bubble-speaker{font-size:8px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:3px}
+.bubble-zh{font-family:'Noto Sans SC',sans-serif;font-size:13px;font-weight:700;color:var(--text);line-height:1.4;margin-bottom:1px}
+.bubble-pinyin{font-size:9px;color:var(--accent2);font-style:italic;margin-bottom:1px}
+.bubble-en{font-size:10px;color:var(--muted);line-height:1.4}
+.story-vocab-row{display:flex;flex-wrap:wrap;gap:4px;width:100%;margin-top:3px}
+.story-vocab-chip{font-size:9px;background:rgba(249,115,22,.1);border:1px solid rgba(249,115,22,.25);color:#fb923c;border-radius:18px;padding:3px 8px;font-weight:700;line-height:1.4}
+.story-tap-hint{font-size:9px;color:var(--muted);text-align:center;font-style:italic;margin-top:2px;opacity:.6}

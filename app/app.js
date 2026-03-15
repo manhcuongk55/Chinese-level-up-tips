@@ -87,6 +87,52 @@ const CARDS=[
   {type:'phrase',zh:'随便',pinyin:'suíbiàn',en:'Whatever / Up to you',vn:'Tùy bạn',tags:['Daily'],example:{zh:'吃什么？随便！',pinyin:'Chī shénme? Suíbiàn!',en:'What to eat? Anything!'}},
   {type:'phrase',zh:'慢慢来',pinyin:'màn màn lái',en:'Take it slow',vn:'Từ từ thôi',tags:['Mindset'],example:{zh:'学语言慢慢来！',pinyin:'Xué yǔyán màn màn lái!',en:'Learn languages slowly!'}},
   {type:'phrase',zh:'一起加油',pinyin:'yīqǐ jiā yóu',en:"Let's keep going!",vn:'Cùng nhau cố lên!',tags:['Motivation'],example:{zh:'一起学习，一起加油！',pinyin:'Yīqǐ xuéxí, yīqǐ jiāyóu!',en:'Study together!'}},
+  // ===== STORY CARDS — Learn like watching a movie 🎬 =====
+  {type:'story',scene:'☕ At the Café',vn:'Tại quán cà phê',setting:'You\'re ordering at a Chinese café for the first time!',
+    lines:[
+      {speaker:'Waiter 服务员',zh:'您好！请问您要什么？',pinyin:'Nín hǎo! Qǐngwèn nín yào shénme?',en:'Hello! What would you like?'},
+      {speaker:'You 你',zh:'我要一杯咖啡，谢谢！',pinyin:'Wǒ yào yī bēi kāfēi, xiè xiè!',en:'I\'d like a coffee, thank you!'},
+      {speaker:'Waiter 服务员',zh:'大杯还是小杯？',pinyin:'Dà bēi hái shì xiǎo bēi?',en:'Large or small?'},
+      {speaker:'You 你',zh:'大杯！多少钱？',pinyin:'Dà bēi! Duōshǎo qián?',en:'Large! How much?'},
+    ],
+    vocab:['您好 (nín hǎo) = polite hello','要 (yào) = want/would like','多少钱 = how much?'],
+    tags:['Daily','Food','Beginner']},
+  {type:'story',scene:'✈️ At the Airport',vn:'Tại sân bay',setting:'Arriving in China — you need to find your hotel!',
+    lines:[
+      {speaker:'You 你',zh:'请问，去市中心怎么走？',pinyin:'Qǐngwèn, qù shìzhōngxīn zěnme zǒu?',en:'Excuse me, how do I get to downtown?'},
+      {speaker:'Local 当地人',zh:'坐地铁，十分钟就到。',pinyin:'Zuò dìtiě, shí fēnzhōng jiù dào.',en:'Take the subway, just 10 minutes.'},
+      {speaker:'You 你',zh:'地铁站在哪里？',pinyin:'Dìtiě zhàn zài nǎlǐ?',en:'Where is the subway station?'},
+      {speaker:'Local 当地人',zh:'在那里！往右走。',pinyin:'Zài nàlǐ! Wǎng yòu zǒu.',en:'Over there! Turn right.'},
+    ],
+    vocab:['请问 = Excuse me / May I ask','怎么走 = how to get to','地铁 (dìtiě) = subway'],
+    tags:['Travel','Getting Around']},
+  {type:'story',scene:'🛒 At the Market',vn:'Tại chợ',setting:'Bargaining at a local Chinese market — like a pro!',
+    lines:[
+      {speaker:'Seller 商家',zh:'你好！买什么？',pinyin:'Nǐ hǎo! Mǎi shénme?',en:'Hello! What are you buying?'},
+      {speaker:'You 你',zh:'这个多少钱？',pinyin:'Zhège duōshǎo qián?',en:'How much is this?'},
+      {speaker:'Seller 商家',zh:'五十块。',pinyin:'Wǔshí kuài.',en:'Fifty yuan.'},
+      {speaker:'You 你',zh:'太贵了！三十块可以吗？',pinyin:'Tài guì le! Sānshí kuài kěyǐ ma?',en:'Too expensive! Can you do 30 yuan?'},
+    ],
+    vocab:['太贵了 (tài guì le) = too expensive!','可以吗 = is it okay? / can we?','块 (kuài) = yuan (informal)'],
+    tags:['Travel','Shopping','Bargaining']},
+  {type:'story',scene:'👋 Making a New Friend',vn:'Kết bạn mới',setting:'You meet someone at a language exchange event!',
+    lines:[
+      {speaker:'New friend',zh:'你好！你是哪里人？',pinyin:'Nǐ hǎo! Nǐ shì nǎlǐ rén?',en:'Hi! Where are you from?'},
+      {speaker:'You 你',zh:'我是越南人，你呢？',pinyin:'Wǒ shì Yuènán rén, nǐ ne?',en:'I\'m Vietnamese, and you?'},
+      {speaker:'New friend',zh:'我是中国人。你的中文很好！',pinyin:'Wǒ shì Zhōngguó rén. Nǐ de Zhōngwén hěn hǎo!',en:'I\'m Chinese. Your Chinese is great!'},
+      {speaker:'You 你',zh:'谢谢！我还在学习。一起加油！',pinyin:'Xiè xiè! Wǒ hái zài xuéxí.',en:'Thanks! I\'m still learning. Let\'s cheer each other on!'},
+    ],
+    vocab:['哪里人 = where are you from','还在学习 = still learning','一起加油 = let\'s cheer each other on'],
+    tags:['Social','Friendship','HSK2']},
+  {type:'story',scene:'🏥 At the Doctor',vn:'Đến gặp bác sĩ',setting:'You\'re not feeling well in China — stay calm!',
+    lines:[
+      {speaker:'Doctor 医生',zh:'你哪里不舒服？',pinyin:'Nǐ nǎlǐ bù shūfu?',en:'Where do you feel unwell?'},
+      {speaker:'You 你',zh:'我头疼，有点发烧。',pinyin:'Wǒ tóuténg, yǒudiǎn fāshāo.',en:'I have a headache and a slight fever.'},
+      {speaker:'Doctor 医生',zh:'没关系，吃这个药，多喝水。',pinyin:'Méi guānxi, chī zhège yào, duō hē shuǐ.',en:'No worries, take this medicine, drink more water.'},
+      {speaker:'You 你',zh:'好的，谢谢医生！',pinyin:'Hǎo de, xiè xiè yīshēng!',en:'Okay, thank you, doctor!'},
+    ],
+    vocab:['头疼 (tóuténg) = headache','发烧 (fāshāo) = fever','没关系 = no worries / it\'s okay'],
+    tags:['Health','Emergency','HSK3']},
 ];
 
 const QUIZ_POOL=CARDS.filter(c=>c.type==='vocab'||c.type==='phrase');
@@ -319,7 +365,6 @@ function buildCard(d){
   if(d.type==='vocab'||d.type==='phrase'){
     const hint=getNativeHint(d);
     const disp=getTargetDisplay(d);
-    const meaning=nativeLang==='vn'&&d.vn?d.vn : nativeLang==='zh'&&d.zh?d.zh : d.en;
     return `<div class="card-inner"><div class="card-face">
       <span class="card-type-badge badge-${d.type==='phrase'?'phrase':'vocab'}">${d.type==='phrase'?'💬 Phrase':'📝 Vocab'}</span>
       ${dirTag}
@@ -329,6 +374,30 @@ function buildCard(d){
       <div class="card-english">${d.en}</div>
       ${d.example?`<div class="card-example"><div class="ex-zh">${d.example.zh}</div><div class="ex-pinyin">${d.example.pinyin}</div><div class="ex-en">${d.example.en}</div></div>`:''}
       <div class="card-tags">${(d.tags||[]).map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+    </div></div>`;
+  }
+
+  if(d.type==='story'){
+    const nativeSubtitle=nativeLang==='vn'&&d.vn?`🇻🇳 ${d.vn}`:d.setting;
+    const lines=d.lines.map((l,i)=>{
+      const isYou=l.speaker.includes('You') || l.speaker.includes('你');
+      const side=isYou?'bubble-right':'bubble-left';
+      return `<div class="story-bubble ${side}" onclick="speakLine('${l.zh.replace(/'/g,"\\'")}')">
+        <div class="bubble-speaker">${l.speaker}</div>
+        <div class="bubble-zh">${l.zh}</div>
+        <div class="bubble-pinyin">${l.pinyin}</div>
+        <div class="bubble-en">${l.en}</div>
+      </div>`;
+    }).join('');
+    const vocabLine=(d.vocab||[]).map(v=>`<span class="story-vocab-chip">${v}</span>`).join('');
+    return `<div class="card-inner"><div class="card-face story-face">
+      <span class="card-type-badge badge-story">🎬 Story</span>
+      ${dirTag}
+      <div class="story-scene-title">${d.scene}</div>
+      <div class="story-setting">${nativeSubtitle}</div>
+      <div class="story-lines">${lines}</div>
+      ${vocabLine?`<div class="story-vocab-row">${vocabLine}</div>`:''}
+      <div class="story-tap-hint">👆 Tap any line to hear it</div>
     </div></div>`;
   }
   return `<div class="card-inner"><div class="card-face">
@@ -402,6 +471,7 @@ function toggleSave(){
   updateMissions();saveStorage();
 }
 function speakCurrent(){const c=CARDS[currentIndex];if(!c?.zh)return;const u=new SpeechSynthesisUtterance(c.zh);u.lang='zh-CN';u.rate=0.8;window.speechSynthesis.speak(u);floatEmoji('🔊');}
+function speakLine(text){if(!text)return;window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='zh-CN';u.rate=0.75;window.speechSynthesis.speak(u);floatEmoji('🔊');}
 function shareCard(){const c=CARDS[currentIndex];const t=c.zh?`🀄 levAIup: ${c.zh} (${c.pinyin||''}) = "${c.en}"\n→ https://manhcuongk55.github.io/Chinese-level-up-tips/app/`:`🀄 levAIup: ${c.title||'Learn Languages!'}\n→ https://manhcuongk55.github.io/Chinese-level-up-tips/app/`;if(navigator.share)navigator.share({text:t});else if(navigator.clipboard)navigator.clipboard.writeText(t).then(()=>showToast('📋 Copied!'));}
 
 // ===== QUIZ =====
