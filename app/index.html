@@ -1,156 +1,232 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>levAIup — Level Up Your Languages with AI</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Noto+Sans+SC:wght@400;700;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+  <title>levAIup — Level Up Your Languages</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Noto+Sans+SC:wght@400;700;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
 
-  <div id="particles"></div>
-  <div id="confetti-container"></div>
-  <div class="xp-popup" id="xp-popup"></div>
+<div id="particles"></div>
+<div id="confetti-container"></div>
+<div class="xp-popup" id="xp-popup"></div>
 
-  <!-- ===== TOP BAR ===== -->
-  <div class="top-bar">
-    <div class="logo">lev<span class="logo-ai">AI</span>up</div>
-    <div class="tabs">
-      <button class="tab active" id="tab-feed"    onclick="switchTab('feed')">Feed</button>
-      <button class="tab"        id="tab-quiz"    onclick="switchTab('quiz')">Quiz</button>
-      <button class="tab"        id="tab-profile" onclick="switchTab('profile')">Profile</button>
-    </div>
-    <div class="lang-toggle" id="lang-toggle" onclick="cycleLang()">
-      <span id="lang-from-flag">🇨🇳</span>
-      <span class="lang-arrow">→</span>
-      <span id="lang-to-flag">🇬🇧</span>
-    </div>
-  </div>
-
-  <!-- XP BAR -->
-  <div class="xp-bar-wrap">
-    <div class="xp-bar-inner">
-      <span class="xp-level-label" id="xp-level-label">Lv.1 · Beginner</span>
-      <div class="xp-track"><div class="xp-fill" id="xp-fill"></div></div>
-      <span class="xp-val" id="xp-val">0 / 100 XP</span>
-    </div>
-    <div class="streak-pill">🔥<span id="streak-count">1</span></div>
-  </div>
-
-  <!-- ===== FEED VIEW ===== -->
-  <div id="view-feed" class="view active">
-    <!-- Language label -->
-    <div class="lang-label-bar">
-      <span id="studying-label">📚 Studying: <b id="lang-name">Chinese (中文)</b></span>
-      <span class="flip-dir" id="flip-dir">ZH → EN</span>
-    </div>
-
-    <!-- Desktop nav arrows -->
-    <button class="nav-arrow up" onclick="goPrev()" title="↑ Previous">↑</button>
-    <button class="nav-arrow dn" onclick="goNext()" title="↓ Next">↓</button>
-
-    <div class="card-stack" id="card-stack"></div>
-
-    <!-- Side actions -->
-    <div class="side-actions">
-      <button class="action-btn" onclick="toggleLike()">
-        <div class="action-icon" id="like-icon">🤍</div>
-        <div class="action-label" id="like-count">0</div>
-      </button>
-      <button class="action-btn" onclick="toggleSave()">
-        <div class="action-icon" id="save-icon">🔖</div>
-        <div class="action-label">Save</div>
-      </button>
-      <button class="action-btn" onclick="speakCurrent()">
-        <div class="action-icon">🔊</div>
-        <div class="action-label">Listen</div>
-      </button>
-      <button class="action-btn" onclick="shareCard()">
-        <div class="action-icon">↗️</div>
-        <div class="action-label">Share</div>
-      </button>
-    </div>
-
-    <!-- Desktop hint -->
-    <div class="desktop-hint">🖱️ Scroll · Drag · ↑↓ Keys</div>
-
-    <!-- Progress -->
-    <div class="card-progress" id="card-progress">1 / 50</div>
-  </div>
-
-  <!-- ===== QUIZ VIEW ===== -->
-  <div id="view-quiz" class="view">
-    <div class="quiz-shell">
-      <!-- Language selector for quiz -->
-      <div class="quiz-lang-row">
-        <button class="lang-pill active" id="qlang-zh" onclick="setQuizLang('zh')">🇨🇳 Chinese</button>
-        <button class="lang-pill" id="qlang-en" onclick="setQuizLang('en')">🇬🇧 English</button>
-        <button class="lang-pill" id="qlang-mix" onclick="setQuizLang('mix')">🌍 Mixed</button>
+<!-- ===== GOAL SETUP MODAL ===== -->
+<div class="modal-overlay" id="goal-modal">
+  <div class="modal-box">
+    <div class="modal-logo">lev<span class="logo-ai">AI</span>up</div>
+    <div class="modal-step" id="mstep-1">
+      <div class="modal-emoji">🎯</div>
+      <h2 class="modal-title">Why are you learning?</h2>
+      <p class="modal-sub">Choose your main goal — this drives your whole journey</p>
+      <div class="goal-grid">
+        <button class="goal-btn" data-goal="travel" onclick="pickGoal(this)">🌏<span>Travel</span></button>
+        <button class="goal-btn" data-goal="hsk"    onclick="pickGoal(this)">📝<span>HSK Exam</span></button>
+        <button class="goal-btn" data-goal="work"   onclick="pickGoal(this)">💼<span>Work/Career</span></button>
+        <button class="goal-btn" data-goal="culture"onclick="pickGoal(this)">🎋<span>Culture & Art</span></button>
+        <button class="goal-btn" data-goal="friends"onclick="pickGoal(this)">👥<span>Make Friends</span></button>
+        <button class="goal-btn" data-goal="fun"    onclick="pickGoal(this)">🎉<span>Just for Fun</span></button>
       </div>
-      <div class="quiz-stats-row">
-        <div class="qstat"><div class="qstat-num" id="qs-score">0</div><div class="qstat-lbl">Score</div></div>
-        <div class="qstat"><div class="qstat-num yellow" id="qs-streak">0🔥</div><div class="qstat-lbl">Streak</div></div>
-        <div class="qstat"><div class="qstat-num purple" id="qs-xp">0⭐</div><div class="qstat-lbl">XP</div></div>
+    </div>
+    <div class="modal-step hidden" id="mstep-2">
+      <div class="modal-emoji">⏳</div>
+      <h2 class="modal-title">Set your deadline</h2>
+      <p class="modal-sub">Choose a realistic time to reach your first milestone</p>
+      <div class="days-grid">
+        <button class="days-btn" data-days="21"  onclick="pickDays(this)">21 days<br/><span>Sprint</span></button>
+        <button class="days-btn" data-days="30"  onclick="pickDays(this)">30 days<br/><span>1 Month</span></button>
+        <button class="days-btn" data-days="60"  onclick="pickDays(this)">60 days<br/><span>2 Months</span></button>
+        <button class="days-btn" data-days="90"  onclick="pickDays(this)">90 days<br/><span>3 Months</span></button>
+        <button class="days-btn" data-days="180" onclick="pickDays(this)">180 days<br/><span>6 Months</span></button>
+        <button class="days-btn" data-days="365" onclick="pickDays(this)">365 days<br/><span>1 Year</span></button>
       </div>
-      <div class="quiz-card" id="quiz-card">
-        <div class="quiz-q" id="quiz-q">—</div>
-        <div class="quiz-hint" id="quiz-hint"></div>
-        <div class="quiz-opts" id="quiz-opts"></div>
+    </div>
+    <div class="modal-step hidden" id="mstep-3">
+      <div class="modal-emoji">🤝</div>
+      <h2 class="modal-title">Find your study buddy</h2>
+      <p class="modal-sub">Enter your area to connect with nearby learners</p>
+      <input class="modal-input" id="buddy-city" placeholder="City (e.g. Ho Chi Minh City)" type="text"/>
+      <input class="modal-input" id="buddy-district" placeholder="District / Apartment (optional)" type="text"/>
+      <input class="modal-input" id="buddy-name" placeholder="Your name or nickname" type="text"/>
+    </div>
+    <div class="modal-step hidden" id="mstep-4">
+      <div class="modal-emoji">📜</div>
+      <h2 class="modal-title">Your commitment pledge</h2>
+      <p class="modal-sub">Write WHY you're doing this — you'll see it every day</p>
+      <textarea class="modal-textarea" id="pledge-text" placeholder="I am learning Chinese because...&#10;&#10;Example: I want to travel China alone in 60 days, make real friends there, and understand their culture."></textarea>
+    </div>
+    <div class="modal-nav">
+      <button class="modal-back" id="modal-back" onclick="modalBack()" style="display:none">← Back</button>
+      <div class="modal-dots" id="modal-dots">
+        <div class="mdot active"></div><div class="mdot"></div><div class="mdot"></div><div class="mdot"></div>
       </div>
-      <div class="quiz-prog">Q <span id="qnum">1</span> / <span id="qtotal">10</span></div>
+      <button class="modal-next" id="modal-next" onclick="modalNext()">Next →</button>
     </div>
   </div>
+</div>
 
-  <!-- ===== PROFILE / LEVEL VIEW ===== -->
-  <div id="view-profile" class="view">
-    <div class="profile-shell">
-      <!-- Level card -->
-      <div class="level-card">
-        <div class="level-badge" id="level-badge">⚔️</div>
-        <div class="level-name" id="level-name">Beginner</div>
-        <div class="level-num" id="level-num">Level 1</div>
-        <div class="level-xp-row">
-          <div class="level-track"><div class="level-fill" id="level-fill"></div></div>
-          <div class="level-xp-txt" id="level-xp-txt">0 / 100 XP</div>
+<!-- ===== TOP BAR ===== -->
+<div class="top-bar">
+  <div class="logo">lev<span class="logo-ai">AI</span>up</div>
+  <div class="tabs">
+    <button class="tab active" id="tab-feed"      onclick="switchTab('feed')">Feed</button>
+    <button class="tab"        id="tab-quiz"      onclick="switchTab('quiz')">Quiz</button>
+    <button class="tab"        id="tab-community" onclick="switchTab('community')">Buddies 👥</button>
+    <button class="tab"        id="tab-profile"   onclick="switchTab('profile')">Me ⚡</button>
+  </div>
+  <div class="lang-toggle" onclick="cycleLang()">
+    <span id="lang-from-flag">🇨🇳</span><span class="lang-arrow">→</span><span id="lang-to-flag">🇬🇧</span>
+  </div>
+</div>
+
+<!-- XP BAR -->
+<div class="xp-bar-wrap">
+  <div class="xp-bar-inner">
+    <span class="xp-level-label" id="xp-level-label">Lv.1 · Beginner</span>
+    <div class="xp-track"><div class="xp-fill" id="xp-fill"></div></div>
+    <span class="xp-val" id="xp-val">0/100 XP</span>
+  </div>
+  <div class="streak-pill">🔥<span id="streak-count">1</span></div>
+</div>
+
+<!-- ===== FEED VIEW ===== -->
+<div id="view-feed" class="view active">
+  <!-- Goal Banner -->
+  <div class="goal-banner" id="goal-banner" style="display:none">
+    <span id="goal-banner-text">🎯 60 days to go!</span>
+    <span id="goal-banner-quote" class="goal-quote"></span>
+  </div>
+
+  <div class="lang-label-bar">
+    <span>📚 <b id="lang-name">Chinese (中文)</b></span>
+    <span class="flip-dir" id="flip-dir">ZH → EN</span>
+  </div>
+
+  <button class="nav-arrow up" onclick="goPrev()">↑</button>
+  <button class="nav-arrow dn" onclick="goNext()">↓</button>
+  <div class="card-stack" id="card-stack"></div>
+  <div class="side-actions">
+    <button class="action-btn" onclick="toggleLike()"><div class="action-icon" id="like-icon">🤍</div><div class="action-label" id="like-count">0</div></button>
+    <button class="action-btn" onclick="toggleSave()"><div class="action-icon" id="save-icon">🔖</div><div class="action-label">Save</div></button>
+    <button class="action-btn" onclick="speakCurrent()"><div class="action-icon">🔊</div><div class="action-label">Listen</div></button>
+    <button class="action-btn" onclick="shareCard()"><div class="action-icon">↗️</div><div class="action-label">Share</div></button>
+  </div>
+  <div class="desktop-hint">🖱️ Scroll · Drag · ↑↓ Keys</div>
+  <div class="card-progress" id="card-progress">1 / 50</div>
+</div>
+
+<!-- ===== QUIZ VIEW ===== -->
+<div id="view-quiz" class="view">
+  <div class="quiz-shell">
+    <div class="quiz-lang-row">
+      <button class="lang-pill active" id="qlang-zh"  onclick="setQuizLang('zh')">🇨🇳 ZH→EN</button>
+      <button class="lang-pill"        id="qlang-en"  onclick="setQuizLang('en')">🇬🇧 EN→ZH</button>
+      <button class="lang-pill"        id="qlang-mix" onclick="setQuizLang('mix')">🌍 Mixed</button>
+    </div>
+    <div class="quiz-stats-row">
+      <div class="qstat"><div class="qstat-num" id="qs-score">0</div><div class="qstat-lbl">Score</div></div>
+      <div class="qstat"><div class="qstat-num yellow" id="qs-streak">0🔥</div><div class="qstat-lbl">Streak</div></div>
+      <div class="qstat"><div class="qstat-num purple" id="qs-xp">0⭐</div><div class="qstat-lbl">XP</div></div>
+    </div>
+    <div class="quiz-card" id="quiz-card">
+      <div class="quiz-q" id="quiz-q">—</div>
+      <div class="quiz-hint" id="quiz-hint"></div>
+      <div class="quiz-opts" id="quiz-opts"></div>
+    </div>
+    <div class="quiz-prog">Q <span id="qnum">1</span> / <span id="qtotal">10</span></div>
+  </div>
+</div>
+
+<!-- ===== COMMUNITY VIEW ===== -->
+<div id="view-community" class="view">
+  <div class="community-shell">
+    <div class="community-header">
+      <div class="comm-title">👥 Study Buddies Near You</div>
+      <div class="comm-sub" id="comm-location-label">📍 Set your location to find local learners</div>
+    </div>
+
+    <!-- Your card -->
+    <div class="your-card" id="your-card">
+      <div class="your-card-inner">
+        <div class="your-avatar" id="your-avatar">🧑</div>
+        <div class="your-info">
+          <div class="your-name" id="your-name-display">Anonymous Learner</div>
+          <div class="your-goal" id="your-goal-display">No goal set yet</div>
+          <div class="your-streak">🔥 <span id="comm-streak">1</span> day streak · ⭐ <span id="comm-xp">0</span> XP</div>
         </div>
-      </div>
-
-      <!-- Languages active -->
-      <div class="section-title">🌍 Languages</div>
-      <div class="lang-grid" id="lang-grid"></div>
-
-      <!-- Daily Missions -->
-      <div class="section-title">🎯 Daily Missions</div>
-      <div class="missions-list" id="missions-list"></div>
-
-      <!-- Stats -->
-      <div class="section-title">📊 Stats</div>
-      <div class="stats-grid">
-        <div class="stat-box"><div class="stat-num" id="st-cards">0</div><div class="stat-lbl">Cards Studied</div></div>
-        <div class="stat-box"><div class="stat-num" id="st-streak">1</div><div class="stat-lbl">Day Streak</div></div>
-        <div class="stat-box"><div class="stat-num" id="st-xp">0</div><div class="stat-lbl">Total XP</div></div>
-        <div class="stat-box"><div class="stat-num" id="st-saved">0</div><div class="stat-lbl">Saved</div></div>
+        <button class="edit-profile-btn" onclick="openGoalModal()">✏️ Edit</button>
       </div>
     </div>
+
+    <!-- Nearby learners -->
+    <div class="section-title">🌏 Learners Near You</div>
+    <div class="buddy-list" id="buddy-list"></div>
+
+    <!-- Study rooms -->
+    <div class="section-title" style="margin-top:16px">🏠 Study Rooms</div>
+    <div class="rooms-list" id="rooms-list"></div>
   </div>
+</div>
 
-  <div class="toast" id="toast"></div>
+<!-- ===== PROFILE VIEW ===== -->
+<div id="view-profile" class="view">
+  <div class="profile-shell">
+    <!-- Goal Card -->
+    <div class="goal-card" id="goal-card">
+      <div class="goal-card-header">
+        <span class="goal-card-icon" id="gc-icon">🎯</span>
+        <div>
+          <div class="goal-card-title" id="gc-title">Set your goal</div>
+          <div class="goal-card-days" id="gc-days">Tap to set up</div>
+        </div>
+        <button class="goal-edit-btn" onclick="openGoalModal()">✏️</button>
+      </div>
+      <div class="goal-progress-bar"><div class="goal-progress-fill" id="gc-fill"></div></div>
+      <div class="goal-pledge-text" id="gc-pledge"></div>
+    </div>
 
-  <!-- BOTTOM NAV -->
-  <div class="bottom-nav">
-    <button class="nav-btn active" id="nav-feed" onclick="switchTab('feed')">
-      <div class="nav-icon">📱</div><div class="nav-label">Feed</div>
-    </button>
-    <button class="nav-btn" id="nav-quiz" onclick="switchTab('quiz')">
-      <div class="nav-icon">🎯</div><div class="nav-label">Quiz</div>
-    </button>
-    <button class="nav-btn" id="nav-profile" onclick="switchTab('profile')">
-      <div class="nav-icon">⚡</div><div class="nav-label">Level Up</div>
-    </button>
+    <!-- Level Card -->
+    <div class="level-card">
+      <div class="level-badge" id="level-badge">🌱</div>
+      <div class="level-name" id="level-name">Beginner</div>
+      <div class="level-num" id="level-num">Level 1</div>
+      <div class="level-xp-row">
+        <div class="level-track"><div class="level-fill" id="level-fill"></div></div>
+        <div class="level-xp-txt" id="level-xp-txt">0 / 100 XP</div>
+      </div>
+    </div>
+
+    <!-- Study Calendar -->
+    <div class="section-title">📅 Study Calendar</div>
+    <div class="calendar-wrap" id="study-calendar"></div>
+
+    <!-- Missions -->
+    <div class="section-title">🎯 Daily Missions</div>
+    <div class="missions-list" id="missions-list"></div>
+
+    <!-- Stats -->
+    <div class="section-title">📊 Stats</div>
+    <div class="stats-grid">
+      <div class="stat-box"><div class="stat-num" id="st-cards">0</div><div class="stat-lbl">Cards Today</div></div>
+      <div class="stat-box"><div class="stat-num" id="st-streak">1</div><div class="stat-lbl">Day Streak</div></div>
+      <div class="stat-box"><div class="stat-num" id="st-xp">0</div><div class="stat-lbl">Total XP</div></div>
+      <div class="stat-box"><div class="stat-num" id="st-saved">0</div><div class="stat-lbl">Saved Cards</div></div>
+    </div>
   </div>
+</div>
 
-  <script src="app.js"></script>
+<div class="toast" id="toast"></div>
+
+<div class="bottom-nav">
+  <button class="nav-btn active" id="nav-feed"      onclick="switchTab('feed')"><div class="nav-icon">📱</div><div class="nav-label">Feed</div></button>
+  <button class="nav-btn"        id="nav-quiz"      onclick="switchTab('quiz')"><div class="nav-icon">🎯</div><div class="nav-label">Quiz</div></button>
+  <button class="nav-btn"        id="nav-community" onclick="switchTab('community')"><div class="nav-icon">👥</div><div class="nav-label">Buddies</div></button>
+  <button class="nav-btn"        id="nav-profile"   onclick="switchTab('profile')"><div class="nav-icon">⚡</div><div class="nav-label">Level Up</div></button>
+</div>
+
+<script src="app.js"></script>
 </body>
 </html>
