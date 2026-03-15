@@ -3,58 +3,59 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>🀄 HanLearn — Learn Chinese & English Together</title>
+  <title>levAIup — Level Up Your Languages with AI</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Noto+Sans+SC:wght@400;700;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- PARTICLES BACKGROUND -->
   <div id="particles"></div>
-
-  <!-- XP POPUP (floats up) -->
-  <div class="xp-popup" id="xp-popup">+10 XP ⭐</div>
-
-  <!-- CONFETTI CONTAINER -->
   <div id="confetti-container"></div>
+  <div class="xp-popup" id="xp-popup"></div>
 
-  <!-- TOP BAR -->
+  <!-- ===== TOP BAR ===== -->
   <div class="top-bar">
-    <div class="streak-badge" id="streak-badge">🔥 <span id="streak-count">1</span> day</div>
+    <div class="logo">lev<span class="logo-ai">AI</span>up</div>
     <div class="tabs">
-      <button class="tab active" id="tab-feed" onclick="switchTab('feed')">For You</button>
-      <button class="tab" id="tab-quiz" onclick="switchTab('quiz')">Quiz 🎯</button>
-      <button class="tab" id="tab-saved" onclick="switchTab('saved')">Saved 🔖</button>
+      <button class="tab active" id="tab-feed"    onclick="switchTab('feed')">Feed</button>
+      <button class="tab"        id="tab-quiz"    onclick="switchTab('quiz')">Quiz</button>
+      <button class="tab"        id="tab-profile" onclick="switchTab('profile')">Profile</button>
     </div>
-    <div class="xp-badge" id="xp-badge">⭐ <span id="xp-count">0</span> XP</div>
+    <div class="lang-toggle" id="lang-toggle" onclick="cycleLang()">
+      <span id="lang-from-flag">🇨🇳</span>
+      <span class="lang-arrow">→</span>
+      <span id="lang-to-flag">🇬🇧</span>
+    </div>
   </div>
 
-  <!-- PROGRESS BAR -->
-  <div class="progress-track">
-    <div class="progress-fill" id="progress-fill"></div>
-    <div class="progress-label" id="progress-label">1 / 50</div>
+  <!-- XP BAR -->
+  <div class="xp-bar-wrap">
+    <div class="xp-bar-inner">
+      <span class="xp-level-label" id="xp-level-label">Lv.1 · Beginner</span>
+      <div class="xp-track"><div class="xp-fill" id="xp-fill"></div></div>
+      <span class="xp-val" id="xp-val">0 / 100 XP</span>
+    </div>
+    <div class="streak-pill">🔥<span id="streak-count">1</span></div>
   </div>
 
   <!-- ===== FEED VIEW ===== -->
   <div id="view-feed" class="view active">
-
-    <!-- DESKTOP NAVIGATION ARROWS -->
-    <button class="nav-arrow nav-arrow-up" id="btn-prev" onclick="goPrev()" title="Previous card (↑)">↑</button>
-    <button class="nav-arrow nav-arrow-down" id="btn-next" onclick="goNext()" title="Next card (↓ or Scroll)">↓</button>
-
-    <!-- KEYBOARD HINT for desktop -->
-    <div class="keyboard-hint" id="keyboard-hint">
-      <span>🖱️ Scroll</span> · <span>🖱️ Drag</span> · <span>⌨️ Arrow Keys</span>
+    <!-- Language label -->
+    <div class="lang-label-bar">
+      <span id="studying-label">📚 Studying: <b id="lang-name">Chinese (中文)</b></span>
+      <span class="flip-dir" id="flip-dir">ZH → EN</span>
     </div>
 
-    <div class="card-stack" id="card-stack">
-      <!-- Cards injected by JS -->
-    </div>
+    <!-- Desktop nav arrows -->
+    <button class="nav-arrow up" onclick="goPrev()" title="↑ Previous">↑</button>
+    <button class="nav-arrow dn" onclick="goNext()" title="↓ Next">↓</button>
 
-    <!-- SIDE ACTIONS -->
+    <div class="card-stack" id="card-stack"></div>
+
+    <!-- Side actions -->
     <div class="side-actions">
-      <button class="action-btn" id="like-btn" onclick="toggleLike()">
+      <button class="action-btn" onclick="toggleLike()">
         <div class="action-icon" id="like-icon">🤍</div>
         <div class="action-label" id="like-count">0</div>
       </button>
@@ -71,48 +72,70 @@
         <div class="action-label">Share</div>
       </button>
     </div>
+
+    <!-- Desktop hint -->
+    <div class="desktop-hint">🖱️ Scroll · Drag · ↑↓ Keys</div>
+
+    <!-- Progress -->
+    <div class="card-progress" id="card-progress">1 / 50</div>
   </div>
 
   <!-- ===== QUIZ VIEW ===== -->
   <div id="view-quiz" class="view">
     <div class="quiz-shell">
-      <div class="quiz-scoreboard">
-        <div class="score-block">
-          <div class="score-num" id="quiz-score">0</div>
-          <div class="score-lbl">Score</div>
-        </div>
-        <div class="score-block">
-          <div class="score-num" id="quiz-streak" style="color:#fbbf24">0🔥</div>
-          <div class="score-lbl">Streak</div>
-        </div>
-        <div class="score-block">
-          <div class="score-num" id="quiz-xp" style="color:#a78bfa">0⭐</div>
-          <div class="score-lbl">XP Earned</div>
-        </div>
+      <!-- Language selector for quiz -->
+      <div class="quiz-lang-row">
+        <button class="lang-pill active" id="qlang-zh" onclick="setQuizLang('zh')">🇨🇳 Chinese</button>
+        <button class="lang-pill" id="qlang-en" onclick="setQuizLang('en')">🇬🇧 English</button>
+        <button class="lang-pill" id="qlang-mix" onclick="setQuizLang('mix')">🌍 Mixed</button>
+      </div>
+      <div class="quiz-stats-row">
+        <div class="qstat"><div class="qstat-num" id="qs-score">0</div><div class="qstat-lbl">Score</div></div>
+        <div class="qstat"><div class="qstat-num yellow" id="qs-streak">0🔥</div><div class="qstat-lbl">Streak</div></div>
+        <div class="qstat"><div class="qstat-num purple" id="qs-xp">0⭐</div><div class="qstat-lbl">XP</div></div>
       </div>
       <div class="quiz-card" id="quiz-card">
-        <div class="quiz-question" id="quiz-question">Loading...</div>
-        <div class="quiz-pinyin" id="quiz-pinyin"></div>
-        <div class="quiz-options" id="quiz-options"></div>
+        <div class="quiz-q" id="quiz-q">—</div>
+        <div class="quiz-hint" id="quiz-hint"></div>
+        <div class="quiz-opts" id="quiz-opts"></div>
       </div>
-      <div class="quiz-progress-text">Question <span id="q-num">1</span> / <span id="q-total">10</span></div>
+      <div class="quiz-prog">Q <span id="qnum">1</span> / <span id="qtotal">10</span></div>
     </div>
   </div>
 
-  <!-- ===== SAVED VIEW ===== -->
-  <div id="view-saved" class="view">
-    <div class="saved-shell">
-      <h2 class="saved-title">📚 Your Saved Cards</h2>
-      <div id="saved-list" class="saved-list">
-        <div class="empty-state">
-          <div class="empty-icon">🔖</div>
-          <p>No saved cards yet.<br/>Tap 🔖 on any card to save it!</p>
+  <!-- ===== PROFILE / LEVEL VIEW ===== -->
+  <div id="view-profile" class="view">
+    <div class="profile-shell">
+      <!-- Level card -->
+      <div class="level-card">
+        <div class="level-badge" id="level-badge">⚔️</div>
+        <div class="level-name" id="level-name">Beginner</div>
+        <div class="level-num" id="level-num">Level 1</div>
+        <div class="level-xp-row">
+          <div class="level-track"><div class="level-fill" id="level-fill"></div></div>
+          <div class="level-xp-txt" id="level-xp-txt">0 / 100 XP</div>
         </div>
       </div>
+
+      <!-- Languages active -->
+      <div class="section-title">🌍 Languages</div>
+      <div class="lang-grid" id="lang-grid"></div>
+
+      <!-- Daily Missions -->
+      <div class="section-title">🎯 Daily Missions</div>
+      <div class="missions-list" id="missions-list"></div>
+
+      <!-- Stats -->
+      <div class="section-title">📊 Stats</div>
+      <div class="stats-grid">
+        <div class="stat-box"><div class="stat-num" id="st-cards">0</div><div class="stat-lbl">Cards Studied</div></div>
+        <div class="stat-box"><div class="stat-num" id="st-streak">1</div><div class="stat-lbl">Day Streak</div></div>
+        <div class="stat-box"><div class="stat-num" id="st-xp">0</div><div class="stat-lbl">Total XP</div></div>
+        <div class="stat-box"><div class="stat-num" id="st-saved">0</div><div class="stat-lbl">Saved</div></div>
+      </div>
     </div>
   </div>
 
-  <!-- TOAST -->
   <div class="toast" id="toast"></div>
 
   <!-- BOTTOM NAV -->
@@ -123,8 +146,8 @@
     <button class="nav-btn" id="nav-quiz" onclick="switchTab('quiz')">
       <div class="nav-icon">🎯</div><div class="nav-label">Quiz</div>
     </button>
-    <button class="nav-btn" id="nav-saved" onclick="switchTab('saved')">
-      <div class="nav-icon">🔖</div><div class="nav-label">Saved</div>
+    <button class="nav-btn" id="nav-profile" onclick="switchTab('profile')">
+      <div class="nav-icon">⚡</div><div class="nav-label">Level Up</div>
     </button>
   </div>
 
