@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>🀄 HanLearn — Learn Chinese & English Together</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <div class="streak-badge">🔥 <span id="streak-count">1</span></div>
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('feed', this)">For You</button>
+      <button class="tab" onclick="switchTab('quiz', this)">Quiz</button>
+      <button class="tab" onclick="switchTab('saved', this)">Saved</button>
+    </div>
+    <div class="xp-badge">⭐ <span id="xp-count">0</span> XP</div>
+  </div>
+
+  <!-- PROGRESS BAR -->
+  <div class="progress-track">
+    <div class="progress-fill" id="progress-fill"></div>
+  </div>
+
+  <!-- ===== FEED VIEW ===== -->
+  <div id="view-feed" class="view active">
+    <div class="card-stack" id="card-stack">
+      <!-- Cards injected by JS -->
+    </div>
+
+    <!-- SWIPE HINT -->
+    <div class="swipe-hint" id="swipe-hint">
+      <div class="hint-arrow">↑</div>
+      <div class="hint-text">Swipe up to learn</div>
+    </div>
+
+    <!-- SIDE ACTIONS -->
+    <div class="side-actions">
+      <button class="action-btn" id="like-btn" onclick="toggleLike()">
+        <div class="action-icon" id="like-icon">🤍</div>
+        <div class="action-label" id="like-count">0</div>
+      </button>
+      <button class="action-btn" onclick="toggleSave()">
+        <div class="action-icon" id="save-icon">🔖</div>
+        <div class="action-label">Save</div>
+      </button>
+      <button class="action-btn" onclick="speakCurrent()">
+        <div class="action-icon">🔊</div>
+        <div class="action-label">Listen</div>
+      </button>
+      <button class="action-btn" onclick="shareCard()">
+        <div class="action-icon">↗️</div>
+        <div class="action-label">Share</div>
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== QUIZ VIEW ===== -->
+  <div id="view-quiz" class="view">
+    <div class="quiz-shell">
+      <div class="quiz-header">
+        <div class="quiz-score-label">Score</div>
+        <div class="quiz-score" id="quiz-score">0</div>
+        <div class="quiz-streak">🔥 <span id="quiz-streak">0</span></div>
+      </div>
+      <div class="quiz-card" id="quiz-card">
+        <div class="quiz-question" id="quiz-question">Loading...</div>
+        <div class="quiz-pinyin" id="quiz-pinyin"></div>
+        <div class="quiz-options" id="quiz-options"></div>
+      </div>
+      <div class="quiz-progress-text">
+        Question <span id="q-num">1</span> of <span id="q-total">10</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SAVED VIEW ===== -->
+  <div id="view-saved" class="view">
+    <div class="saved-shell">
+      <h2 class="saved-title">📚 Your Saved Cards</h2>
+      <div id="saved-list" class="saved-list">
+        <div class="empty-state">
+          <div class="empty-icon">🔖</div>
+          <p>No saved cards yet.<br/>Tap 🔖 on any card to save it!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div class="toast" id="toast"></div>
+
+  <!-- BOTTOM NAV -->
+  <div class="bottom-nav">
+    <button class="nav-btn active" onclick="switchTab('feed', this)" data-nav="feed">
+      <div class="nav-icon">📱</div>
+      <div class="nav-label">Feed</div>
+    </button>
+    <button class="nav-btn" onclick="switchTab('quiz', this)" data-nav="quiz">
+      <div class="nav-icon">🎯</div>
+      <div class="nav-label">Quiz</div>
+    </button>
+    <button class="nav-btn" onclick="switchTab('saved', this)" data-nav="saved">
+      <div class="nav-icon">🔖</div>
+      <div class="nav-label">Saved</div>
+    </button>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
