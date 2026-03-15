@@ -141,6 +141,13 @@
 
 <!-- ===== FEED VIEW ===== -->
 <div id="view-feed" class="view active">
+  <!-- Referral welcome banner -->
+  <div class="referral-banner" id="referral-banner" style="display:none">
+    <span class="ref-wave">👋</span>
+    <span id="ref-msg">Your friend invited you!</span>
+    <button class="ref-try-btn" onclick="quickDual()">Try Dual Mode →</button>
+  </div>
+
   <div class="goal-banner" id="goal-banner" style="display:none">
     <span id="goal-banner-text">🎯 60 days to go!</span>
     <span id="goal-banner-quote" class="goal-quote"></span>
@@ -168,6 +175,10 @@
     <button class="action-btn" onclick="toggleSave()"><div class="action-icon" id="save-icon">🔖</div><div class="action-label">Save</div></button>
     <button class="action-btn" onclick="speakCurrent()"><div class="action-icon">🔊</div><div class="action-label">Listen</div></button>
     <button class="action-btn" onclick="shareCard()"><div class="action-icon">↗️</div><div class="action-label">Share</div></button>
+  </div>
+  <!-- Quick Try Dual Mode CTA (shows when single lang) -->
+  <div class="quick-dual-cta" id="quick-dual-cta" style="display:none" onclick="quickDual()">
+    ✨ Try Dual Mode — learn 2 languages at once!
   </div>
   <div class="desktop-hint">🖱️ Scroll · Drag · ↑↓ Keys</div>
   <div class="card-progress" id="card-progress">1 / 50</div>
@@ -339,6 +350,16 @@
         <div class="level-track"><div class="level-fill" id="level-fill"></div></div>
         <div class="level-xp-txt" id="level-xp-txt">0 / 100 XP</div>
       </div>
+    </div>
+
+    <!-- Invite Friends Card -->
+    <div class="invite-card">
+      <div class="invite-icon">🎁</div>
+      <div class="invite-info">
+        <div class="invite-title">Invite your friends!</div>
+        <div class="invite-sub">Share levAIup and learn together.</div>
+      </div>
+      <button class="invite-btn" onclick="inviteFriends()">Invite</button>
     </div>
 
     <div class="section-title">📅 Study Calendar</div>

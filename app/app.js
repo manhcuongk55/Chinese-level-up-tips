@@ -171,6 +171,7 @@ function init(){
   renderGoalBanner();updateDualModeBar();updateTopBarLang();
   if(!userGoal.type){setTimeout(()=>document.getElementById('goal-modal').classList.remove('hidden'),600);}
   else document.getElementById('goal-modal').classList.add('hidden');
+  checkReferral();
 }
 
 // ===== PARTICLES =====
@@ -305,6 +306,9 @@ function updateDualModeBar(){
   const da=document.getElementById('dual-lang-a'),db=document.getElementById('dual-lang-b');
   if(da){da.textContent=nl.flag+'→'+la.flag+' '+la.short;da.classList.toggle('active',activeTargetIdx===0);}
   if(db){db.textContent=nl.flag+'→'+lb.flag+' '+lb.short;db.classList.toggle('active',activeTargetIdx===1);}
+  // Show/Hide Quick Try Dual Mode CTA
+  const qd=document.getElementById('quick-dual-cta');
+  if(qd)qd.style.display=targetLangs.length<2?'block':'none';
 }
 
 function cycleLang(){
@@ -820,6 +824,42 @@ function sendCheckin(){
   myCheckins.push({name:userGoal.name||'You',text,time,isYou:true});
   localStorage.setItem('levelai_checkins',JSON.stringify(myCheckins.slice(-5)));
   input.value='';renderCheckinFeed();addXP(10);showXPBurst('+10 XP 💬');floatEmoji('💬');showToast('✅ Checked in!');
+}
+
+// ===== DUAL MODE & INVITE FLOW =====
+function checkReferral(){
+  const params=new URLSearchParams(window.location.search);
+  const ref=params.get('ref')||params.get('squad');
+  if(ref){
+    const banner=document.getElementById('referral-banner');
+    const msg=document.getElementById('ref-msg');
+    if(banner){banner.style.display='flex';if(msg)msg.textContent=`Your friend ${ref.length<10?ref:''} invited you!`;}
+  }
+}
+
+function quickDual(){
+  nativeLang='vn'; targetLangs=['zh','en']; activeTargetIdx=0;
+  userGoal={...userGoal, nativeLang, targetLangs, type:userGoal.type||'fun', days:userGoal.days||60, startDate:userGoal.startDate||new Date().toISOString()};
+  saveStorage();
+  updateTopBarLang(); updateDualModeBar(); renderCurrentCard();
+  const banner=document.getElementById('referral-banner'); if(banner)banner.style.display='none';
+  showToast('✨ Dual Mode ON! Learning ZH + EN! 加油！');
+  launchConfetti(); addXP(50); showXPBurst('+50 XP 🚀');
+}
+
+function inviteFriends(){
+  const myName=userGoal.name||'A Friend';
+  const url=`${window.location.origin}${window.location.pathname}?ref=${encodeURIComponent(myName)}`;
+  const text=`🚀 Join me on levAIup! I'm learning Chinese and English together. Try the Dual Mode with me: ${url}`;
+  
+  if(navigator.share){
+    navigator.share({title:'levAIup Invitation', text, url});
+  } else {
+    navigator.clipboard.writeText(text).then(()=>{
+      showToast('📋 Invite link copied to clipboard!');
+      floatEmoji('🎁');
+    });
+  }
 }
 
 
