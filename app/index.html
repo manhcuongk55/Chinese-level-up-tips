@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
-  <title>levAIup — Level Up Your Languages</title>
+  <title>levAIup — Level Up Your Languages with AI</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Noto+Sans+SC:wght@400;700;900&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="style.css"/>
@@ -14,27 +14,61 @@
 <div id="confetti-container"></div>
 <div class="xp-popup" id="xp-popup"></div>
 
-<!-- ===== GOAL SETUP MODAL ===== -->
+<!-- ===== GOAL SETUP MODAL (6 steps) ===== -->
 <div class="modal-overlay" id="goal-modal">
   <div class="modal-box">
     <div class="modal-logo">lev<span class="logo-ai">AI</span>up</div>
+
+    <!-- STEP 1: Native / strongest language -->
     <div class="modal-step" id="mstep-1">
-      <div class="modal-emoji">🎯</div>
-      <h2 class="modal-title">Why are you learning?</h2>
-      <p class="modal-sub">Choose your main goal — this drives your whole journey</p>
-      <div class="goal-grid">
-        <button class="goal-btn" data-goal="travel" onclick="pickGoal(this)">🌏<span>Travel</span></button>
-        <button class="goal-btn" data-goal="hsk"    onclick="pickGoal(this)">📝<span>HSK Exam</span></button>
-        <button class="goal-btn" data-goal="work"   onclick="pickGoal(this)">💼<span>Work/Career</span></button>
-        <button class="goal-btn" data-goal="culture"onclick="pickGoal(this)">🎋<span>Culture & Art</span></button>
-        <button class="goal-btn" data-goal="friends"onclick="pickGoal(this)">👥<span>Make Friends</span></button>
-        <button class="goal-btn" data-goal="fun"    onclick="pickGoal(this)">🎉<span>Just for Fun</span></button>
+      <div class="modal-emoji">🌟</div>
+      <h2 class="modal-title">Your strongest language?</h2>
+      <p class="modal-sub">This is the language you'll <b>USE</b> to learn — your teacher language</p>
+      <div class="lang-pick-grid">
+        <button class="lang-pick-btn" data-code="vn" onclick="pickNative(this)">🇻🇳<span>Tiếng Việt</span></button>
+        <button class="lang-pick-btn" data-code="en" onclick="pickNative(this)">🇬🇧<span>English</span></button>
+        <button class="lang-pick-btn" data-code="zh" onclick="pickNative(this)">🇨🇳<span>中文</span></button>
+        <button class="lang-pick-btn" data-code="ja" onclick="pickNative(this)">🇯🇵<span>日本語</span></button>
+        <button class="lang-pick-btn" data-code="ko" onclick="pickNative(this)">🇰🇷<span>한국어</span></button>
+        <button class="lang-pick-btn" data-code="es" onclick="pickNative(this)">🇪🇸<span>Español</span></button>
+        <button class="lang-pick-btn" data-code="fr" onclick="pickNative(this)">🇫🇷<span>Français</span></button>
+        <button class="lang-pick-btn" data-code="de" onclick="pickNative(this)">🇩🇪<span>Deutsch</span></button>
       </div>
     </div>
+
+    <!-- STEP 2: Target languages (up to 2) -->
     <div class="modal-step hidden" id="mstep-2">
+      <div class="modal-emoji">📚</div>
+      <h2 class="modal-title">What do you want to learn?</h2>
+      <p class="modal-sub">Pick <b>1 or 2 languages</b> — use your strongest to learn them</p>
+      <div class="lang-pick-grid" id="target-lang-grid">
+        <!-- populated dynamically (excludes native lang) -->
+      </div>
+      <div class="dual-tip" id="dual-tip" style="display:none">
+        ✨ Dual Mode! Cards will alternate between both languages.
+      </div>
+    </div>
+
+    <!-- STEP 3: Goal / Why -->
+    <div class="modal-step hidden" id="mstep-3">
+      <div class="modal-emoji">🎯</div>
+      <h2 class="modal-title">Why are you learning?</h2>
+      <p class="modal-sub">Choose your main motivation — this shapes your path</p>
+      <div class="goal-grid">
+        <button class="goal-btn" data-goal="travel"  onclick="pickGoal(this)">🌏<span>Travel</span></button>
+        <button class="goal-btn" data-goal="hsk"     onclick="pickGoal(this)">📝<span>HSK/Exam</span></button>
+        <button class="goal-btn" data-goal="work"    onclick="pickGoal(this)">💼<span>Work/Career</span></button>
+        <button class="goal-btn" data-goal="culture" onclick="pickGoal(this)">🎋<span>Culture</span></button>
+        <button class="goal-btn" data-goal="friends" onclick="pickGoal(this)">👥<span>Make Friends</span></button>
+        <button class="goal-btn" data-goal="fun"     onclick="pickGoal(this)">🎉<span>Just for Fun</span></button>
+      </div>
+    </div>
+
+    <!-- STEP 4: Deadline -->
+    <div class="modal-step hidden" id="mstep-4">
       <div class="modal-emoji">⏳</div>
       <h2 class="modal-title">Set your deadline</h2>
-      <p class="modal-sub">Choose a realistic time to reach your first milestone</p>
+      <p class="modal-sub">Choose a realistic milestone target</p>
       <div class="days-grid">
         <button class="days-btn" data-days="21"  onclick="pickDays(this)">21 days<br/><span>Sprint</span></button>
         <button class="days-btn" data-days="30"  onclick="pickDays(this)">30 days<br/><span>1 Month</span></button>
@@ -44,24 +78,31 @@
         <button class="days-btn" data-days="365" onclick="pickDays(this)">365 days<br/><span>1 Year</span></button>
       </div>
     </div>
-    <div class="modal-step hidden" id="mstep-3">
+
+    <!-- STEP 5: Find buddy -->
+    <div class="modal-step hidden" id="mstep-5">
       <div class="modal-emoji">🤝</div>
       <h2 class="modal-title">Find your study buddy</h2>
-      <p class="modal-sub">Enter your area to connect with nearby learners</p>
-      <input class="modal-input" id="buddy-city" placeholder="City (e.g. Ho Chi Minh City)" type="text"/>
+      <p class="modal-sub">Connect with learners in your area or apartment block</p>
+      <input class="modal-input" id="buddy-name"     placeholder="Your nickname" type="text"/>
+      <input class="modal-input" id="buddy-city"     placeholder="City (e.g. Ho Chi Minh City)" type="text"/>
       <input class="modal-input" id="buddy-district" placeholder="District / Apartment (optional)" type="text"/>
-      <input class="modal-input" id="buddy-name" placeholder="Your name or nickname" type="text"/>
     </div>
-    <div class="modal-step hidden" id="mstep-4">
+
+    <!-- STEP 6: Pledge -->
+    <div class="modal-step hidden" id="mstep-6">
       <div class="modal-emoji">📜</div>
       <h2 class="modal-title">Your commitment pledge</h2>
-      <p class="modal-sub">Write WHY you're doing this — you'll see it every day</p>
-      <textarea class="modal-textarea" id="pledge-text" placeholder="I am learning Chinese because...&#10;&#10;Example: I want to travel China alone in 60 days, make real friends there, and understand their culture."></textarea>
+      <p class="modal-sub">Write <b>WHY</b> you're doing this — you'll see it every day</p>
+      <textarea class="modal-textarea" id="pledge-text"
+        placeholder="I am learning because...&#10;&#10;Example: I want to explore Japan and China on my own, understand their culture, and make real friends there."></textarea>
     </div>
+
     <div class="modal-nav">
       <button class="modal-back" id="modal-back" onclick="modalBack()" style="display:none">← Back</button>
       <div class="modal-dots" id="modal-dots">
-        <div class="mdot active"></div><div class="mdot"></div><div class="mdot"></div><div class="mdot"></div>
+        <div class="mdot active"></div><div class="mdot"></div><div class="mdot"></div>
+        <div class="mdot"></div><div class="mdot"></div><div class="mdot"></div>
       </div>
       <button class="modal-next" id="modal-next" onclick="modalNext()">Next →</button>
     </div>
@@ -74,11 +115,17 @@
   <div class="tabs">
     <button class="tab active" id="tab-feed"      onclick="switchTab('feed')">Feed</button>
     <button class="tab"        id="tab-quiz"      onclick="switchTab('quiz')">Quiz</button>
-    <button class="tab"        id="tab-community" onclick="switchTab('community')">Buddies 👥</button>
+    <button class="tab"        id="tab-community" onclick="switchTab('community')">Buddies</button>
     <button class="tab"        id="tab-profile"   onclick="switchTab('profile')">Me ⚡</button>
   </div>
-  <div class="lang-toggle" onclick="cycleLang()">
-    <span id="lang-from-flag">🇨🇳</span><span class="lang-arrow">→</span><span id="lang-to-flag">🇬🇧</span>
+  <!-- Active language pair + dual switch -->
+  <div class="lang-switcher">
+    <div class="lang-toggle" onclick="cycleLang()">
+      <span id="lang-from-flag">🇻🇳</span><span class="lang-arrow">→</span><span id="lang-to-flag">🇨🇳</span>
+    </div>
+    <div class="lang2-badge" id="lang2-badge" style="display:none" onclick="switchSecondLang()">
+      <span id="lang2-flag">🇯🇵</span>
+    </div>
   </div>
 </div>
 
@@ -94,20 +141,28 @@
 
 <!-- ===== FEED VIEW ===== -->
 <div id="view-feed" class="view active">
-  <!-- Goal Banner -->
   <div class="goal-banner" id="goal-banner" style="display:none">
     <span id="goal-banner-text">🎯 60 days to go!</span>
     <span id="goal-banner-quote" class="goal-quote"></span>
   </div>
 
-  <div class="lang-label-bar">
+  <!-- Dual-language mode indicator -->
+  <div class="dual-mode-bar" id="dual-mode-bar" style="display:none">
+    <span id="dual-lang-a" class="dl-pill active"></span>
+    <span class="dl-sep">↔</span>
+    <span id="dual-lang-b" class="dl-pill"></span>
+    <span class="dl-hint">Cards alternate between both</span>
+  </div>
+
+  <div class="lang-label-bar" id="lang-label-bar">
     <span>📚 <b id="lang-name">Chinese (中文)</b></span>
-    <span class="flip-dir" id="flip-dir">ZH → EN</span>
+    <span class="flip-dir" id="flip-dir">VN → ZH</span>
   </div>
 
   <button class="nav-arrow up" onclick="goPrev()">↑</button>
   <button class="nav-arrow dn" onclick="goNext()">↓</button>
   <div class="card-stack" id="card-stack"></div>
+
   <div class="side-actions">
     <button class="action-btn" onclick="toggleLike()"><div class="action-icon" id="like-icon">🤍</div><div class="action-label" id="like-count">0</div></button>
     <button class="action-btn" onclick="toggleSave()"><div class="action-icon" id="save-icon">🔖</div><div class="action-label">Save</div></button>
@@ -122,9 +177,9 @@
 <div id="view-quiz" class="view">
   <div class="quiz-shell">
     <div class="quiz-lang-row">
-      <button class="lang-pill active" id="qlang-zh"  onclick="setQuizLang('zh')">🇨🇳 ZH→EN</button>
-      <button class="lang-pill"        id="qlang-en"  onclick="setQuizLang('en')">🇬🇧 EN→ZH</button>
-      <button class="lang-pill"        id="qlang-mix" onclick="setQuizLang('mix')">🌍 Mixed</button>
+      <button class="lang-pill active" id="qlang-zh"  onclick="setQuizLang('zh')">🇨🇳 ZH</button>
+      <button class="lang-pill"        id="qlang-en"  onclick="setQuizLang('en')">🇬🇧 EN</button>
+      <button class="lang-pill"        id="qlang-mix" onclick="setQuizLang('mix')">🌍 Mix</button>
     </div>
     <div class="quiz-stats-row">
       <div class="qstat"><div class="qstat-num" id="qs-score">0</div><div class="qstat-lbl">Score</div></div>
@@ -147,25 +202,19 @@
       <div class="comm-title">👥 Study Buddies Near You</div>
       <div class="comm-sub" id="comm-location-label">📍 Set your location to find local learners</div>
     </div>
-
-    <!-- Your card -->
-    <div class="your-card" id="your-card">
+    <div class="your-card">
       <div class="your-card-inner">
-        <div class="your-avatar" id="your-avatar">🧑</div>
+        <div class="your-avatar">🧑</div>
         <div class="your-info">
           <div class="your-name" id="your-name-display">Anonymous Learner</div>
-          <div class="your-goal" id="your-goal-display">No goal set yet</div>
-          <div class="your-streak">🔥 <span id="comm-streak">1</span> day streak · ⭐ <span id="comm-xp">0</span> XP</div>
+          <div class="your-goal" id="your-goal-display">No languages set yet</div>
+          <div class="your-streak">🔥 <span id="comm-streak">1</span> days · ⭐ <span id="comm-xp">0</span> XP</div>
         </div>
         <button class="edit-profile-btn" onclick="openGoalModal()">✏️ Edit</button>
       </div>
     </div>
-
-    <!-- Nearby learners -->
     <div class="section-title">🌏 Learners Near You</div>
     <div class="buddy-list" id="buddy-list"></div>
-
-    <!-- Study rooms -->
     <div class="section-title" style="margin-top:16px">🏠 Study Rooms</div>
     <div class="rooms-list" id="rooms-list"></div>
   </div>
@@ -174,21 +223,23 @@
 <!-- ===== PROFILE VIEW ===== -->
 <div id="view-profile" class="view">
   <div class="profile-shell">
-    <!-- Goal Card -->
-    <div class="goal-card" id="goal-card">
+    <!-- Goal card -->
+    <div class="goal-card">
       <div class="goal-card-header">
         <span class="goal-card-icon" id="gc-icon">🎯</span>
         <div>
           <div class="goal-card-title" id="gc-title">Set your goal</div>
-          <div class="goal-card-days" id="gc-days">Tap to set up</div>
+          <div class="goal-card-days" id="gc-days">Tap to set up →</div>
         </div>
         <button class="goal-edit-btn" onclick="openGoalModal()">✏️</button>
       </div>
+      <!-- Language path display -->
+      <div class="lang-path" id="lang-path"></div>
       <div class="goal-progress-bar"><div class="goal-progress-fill" id="gc-fill"></div></div>
       <div class="goal-pledge-text" id="gc-pledge"></div>
     </div>
 
-    <!-- Level Card -->
+    <!-- Level card -->
     <div class="level-card">
       <div class="level-badge" id="level-badge">🌱</div>
       <div class="level-name" id="level-name">Beginner</div>
@@ -199,21 +250,16 @@
       </div>
     </div>
 
-    <!-- Study Calendar -->
     <div class="section-title">📅 Study Calendar</div>
     <div class="calendar-wrap" id="study-calendar"></div>
-
-    <!-- Missions -->
     <div class="section-title">🎯 Daily Missions</div>
     <div class="missions-list" id="missions-list"></div>
-
-    <!-- Stats -->
     <div class="section-title">📊 Stats</div>
     <div class="stats-grid">
       <div class="stat-box"><div class="stat-num" id="st-cards">0</div><div class="stat-lbl">Cards Today</div></div>
       <div class="stat-box"><div class="stat-num" id="st-streak">1</div><div class="stat-lbl">Day Streak</div></div>
       <div class="stat-box"><div class="stat-num" id="st-xp">0</div><div class="stat-lbl">Total XP</div></div>
-      <div class="stat-box"><div class="stat-num" id="st-saved">0</div><div class="stat-lbl">Saved Cards</div></div>
+      <div class="stat-box"><div class="stat-num" id="st-saved">0</div><div class="stat-lbl">Saved</div></div>
     </div>
   </div>
 </div>
