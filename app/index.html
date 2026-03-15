@@ -10,32 +10,46 @@
 </head>
 <body>
 
+  <!-- PARTICLES BACKGROUND -->
+  <div id="particles"></div>
+
+  <!-- XP POPUP (floats up) -->
+  <div class="xp-popup" id="xp-popup">+10 XP ⭐</div>
+
+  <!-- CONFETTI CONTAINER -->
+  <div id="confetti-container"></div>
+
   <!-- TOP BAR -->
   <div class="top-bar">
-    <div class="streak-badge">🔥 <span id="streak-count">1</span></div>
+    <div class="streak-badge" id="streak-badge">🔥 <span id="streak-count">1</span> day</div>
     <div class="tabs">
-      <button class="tab active" onclick="switchTab('feed', this)">For You</button>
-      <button class="tab" onclick="switchTab('quiz', this)">Quiz</button>
-      <button class="tab" onclick="switchTab('saved', this)">Saved</button>
+      <button class="tab active" id="tab-feed" onclick="switchTab('feed')">For You</button>
+      <button class="tab" id="tab-quiz" onclick="switchTab('quiz')">Quiz 🎯</button>
+      <button class="tab" id="tab-saved" onclick="switchTab('saved')">Saved 🔖</button>
     </div>
-    <div class="xp-badge">⭐ <span id="xp-count">0</span> XP</div>
+    <div class="xp-badge" id="xp-badge">⭐ <span id="xp-count">0</span> XP</div>
   </div>
 
   <!-- PROGRESS BAR -->
   <div class="progress-track">
     <div class="progress-fill" id="progress-fill"></div>
+    <div class="progress-label" id="progress-label">1 / 50</div>
   </div>
 
   <!-- ===== FEED VIEW ===== -->
   <div id="view-feed" class="view active">
-    <div class="card-stack" id="card-stack">
-      <!-- Cards injected by JS -->
+
+    <!-- DESKTOP NAVIGATION ARROWS -->
+    <button class="nav-arrow nav-arrow-up" id="btn-prev" onclick="goPrev()" title="Previous card (↑)">↑</button>
+    <button class="nav-arrow nav-arrow-down" id="btn-next" onclick="goNext()" title="Next card (↓ or Scroll)">↓</button>
+
+    <!-- KEYBOARD HINT for desktop -->
+    <div class="keyboard-hint" id="keyboard-hint">
+      <span>🖱️ Scroll</span> · <span>🖱️ Drag</span> · <span>⌨️ Arrow Keys</span>
     </div>
 
-    <!-- SWIPE HINT -->
-    <div class="swipe-hint" id="swipe-hint">
-      <div class="hint-arrow">↑</div>
-      <div class="hint-text">Swipe up to learn</div>
+    <div class="card-stack" id="card-stack">
+      <!-- Cards injected by JS -->
     </div>
 
     <!-- SIDE ACTIONS -->
@@ -62,19 +76,26 @@
   <!-- ===== QUIZ VIEW ===== -->
   <div id="view-quiz" class="view">
     <div class="quiz-shell">
-      <div class="quiz-header">
-        <div class="quiz-score-label">Score</div>
-        <div class="quiz-score" id="quiz-score">0</div>
-        <div class="quiz-streak">🔥 <span id="quiz-streak">0</span></div>
+      <div class="quiz-scoreboard">
+        <div class="score-block">
+          <div class="score-num" id="quiz-score">0</div>
+          <div class="score-lbl">Score</div>
+        </div>
+        <div class="score-block">
+          <div class="score-num" id="quiz-streak" style="color:#fbbf24">0🔥</div>
+          <div class="score-lbl">Streak</div>
+        </div>
+        <div class="score-block">
+          <div class="score-num" id="quiz-xp" style="color:#a78bfa">0⭐</div>
+          <div class="score-lbl">XP Earned</div>
+        </div>
       </div>
       <div class="quiz-card" id="quiz-card">
         <div class="quiz-question" id="quiz-question">Loading...</div>
         <div class="quiz-pinyin" id="quiz-pinyin"></div>
         <div class="quiz-options" id="quiz-options"></div>
       </div>
-      <div class="quiz-progress-text">
-        Question <span id="q-num">1</span> of <span id="q-total">10</span>
-      </div>
+      <div class="quiz-progress-text">Question <span id="q-num">1</span> / <span id="q-total">10</span></div>
     </div>
   </div>
 
@@ -91,22 +112,19 @@
     </div>
   </div>
 
-  <!-- TOAST NOTIFICATION -->
+  <!-- TOAST -->
   <div class="toast" id="toast"></div>
 
   <!-- BOTTOM NAV -->
   <div class="bottom-nav">
-    <button class="nav-btn active" onclick="switchTab('feed', this)" data-nav="feed">
-      <div class="nav-icon">📱</div>
-      <div class="nav-label">Feed</div>
+    <button class="nav-btn active" id="nav-feed" onclick="switchTab('feed')">
+      <div class="nav-icon">📱</div><div class="nav-label">Feed</div>
     </button>
-    <button class="nav-btn" onclick="switchTab('quiz', this)" data-nav="quiz">
-      <div class="nav-icon">🎯</div>
-      <div class="nav-label">Quiz</div>
+    <button class="nav-btn" id="nav-quiz" onclick="switchTab('quiz')">
+      <div class="nav-icon">🎯</div><div class="nav-label">Quiz</div>
     </button>
-    <button class="nav-btn" onclick="switchTab('saved', this)" data-nav="saved">
-      <div class="nav-icon">🔖</div>
-      <div class="nav-label">Saved</div>
+    <button class="nav-btn" id="nav-saved" onclick="switchTab('saved')">
+      <div class="nav-icon">🔖</div><div class="nav-label">Saved</div>
     </button>
   </div>
 
